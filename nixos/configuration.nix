@@ -1,7 +1,8 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, outputs, lib, config, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [ outputs.overlays.unstable-packages ];
 
   nix = {
     # This will add each flake input as a registry
@@ -22,7 +23,29 @@
   networking.hostName = "honor";
   networking.networkmanager.enable = true;
 
-  boot.loader.systemd-boot.enable = true;
+  console = {
+    useXkbConfig = true;
+    earlySetup = false;
+  };
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      timeout = 0;
+    };
+    kernelParams = [
+      "quiet"
+      "loglevel=3"
+      "systemd.show_status=auto"
+      "udev.log_level=3"
+      "rd.udev.log_level=3"
+      "vt.global_cursor_default=0"
+    ];
+    consoleLogLevel = 0;
+    initrd = {
+      verbose = false;
+      systemd.enable = true;
+    };
+  };
 
   time.timeZone = "Europe/Minsk";
 
@@ -30,11 +53,14 @@
     metagigachad = {
       initialPassword = "1111";
       isNormalUser = true;
-      extraGroups = [ "wheel" "vboxsf" "docker" ];
+      extraGroups = [ "wheel" "vboxsf" "docker" "kvm" ];
     };
   };
 
-  hardware.opengl = { enable = true; };
+  hardware.opengl = { 
+    enable = true; 
+    driSupport32Bit = true;
+  };
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -44,7 +70,7 @@
     jack.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs.unstable; [
     (catppuccin-gtk.override {
       accents = [ "lavender" ];
       size = "standard";
@@ -57,13 +83,11 @@
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.qt5.qtquickcontrols2
   ];
-  fonts.packages = with pkgs; [ ubuntu_font_family ];
+  fonts.fonts = with pkgs; [ ubuntu_font_family ];
 
-  programs.hyprland.enable = true;
-
+  # Display Manager
   services.xserver = {
     enable = true;
-
     libinput = {
       enable = true;
       mouse = { accelProfile = "flat"; };
@@ -79,10 +103,13 @@
       };
     };
   };
+  programs.hyprland.enable = true;
 
+  # SSH client
   services.gnome.gnome-keyring.enable = true;
   programs.ssh.startAgent = true;
 
+  # Thunar
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [
@@ -91,14 +118,19 @@
       thunar-media-tags-plugin
     ];
   };
-
   services.gvfs = {
     enable = true;
     package = (pkgs.gvfs.override { udevSupport = true; });
   };
   services.tumbler.enable = true;
 
-  hardware.bluetooth.enable = true;
+  # Bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    settings = { Policy = { ReconnectAttempts = 0; }; };
+  };
+
+  virtualisation.docker.enable = true;
 
   environment.loginShellInit = ''
     if [ -e $HOME/.zshenv ]

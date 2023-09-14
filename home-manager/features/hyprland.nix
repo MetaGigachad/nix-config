@@ -57,6 +57,7 @@
       exec-once = dunst
       exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
       
+      monitor=,preferred,auto,auto
       general {
         gaps_in = 0
         gaps_out = 0
@@ -73,7 +74,7 @@
 
       # ETC
       misc {
-        focus_on_activate = true
+        focus_on_activate = false
         disable_hyprland_logo = true
         disable_splash_rendering = true
       }
@@ -81,6 +82,7 @@
       input {
         kb_layout = us,ru
         kb_variant = grp:win_space_toggle
+        kb_options = caps:escape
         follow_mouse = 1
         accel_profile = flat
         touchpad {
@@ -90,7 +92,7 @@
       }
 
       general {
-        no_cursor_warps = true
+        no_cursor_warps = false
         resize_on_border = true
         layout = master
       }

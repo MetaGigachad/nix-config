@@ -7,4 +7,17 @@
     Index:
       StandartLibrary: Yes
   '';
+  home.file.".clang-format".text = ''
+    ---
+    IndentWidth: 4
+    ---
+    Language: Cpp
+    BasedOnStyle: Google
+    IndentWidth: 4
+    AccessModifierOffset: -4
+    ColumnLimit: 90
+    DerivePointerAlignment: false
+    PointerAlignment: Left
+    SpaceBeforeCpp11BracedList: true
+  '';
 }

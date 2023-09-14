@@ -1,7 +1,8 @@
 { pkgs, config, ... }: {
   home.packages = with pkgs; [ tree lsd ];
 
-  home.sessionVariables = { 
+  home.sessionVariables = {
+    CLICOLOR = 1;
     EDITOR = "nvim";
   };
 
@@ -14,8 +15,7 @@
     };
     shellAliases = {
       # Nix
-      system-update =
-        "sudo nixos-rebuild switch --flake ~/nix-config/#honor";
+      system-update = "sudo nixos-rebuild switch --flake ~/nix-config/#honor";
       home-update =
         "home-manager switch --flake ~/nix-config/#metagigachad@honor";
       # Tree
@@ -56,6 +56,9 @@
         };
       }
     ];
+    initExtra = ''
+      export PATH="./venv/bin:$PATH"
+    '';
   };
   programs.starship.enable = true;
   programs.starship.enableZshIntegration = true;

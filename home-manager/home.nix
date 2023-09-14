@@ -1,11 +1,15 @@
 { inputs, lib, config, pkgs, ... }: {
   imports = [
+    ./features/toolchains.nix
+    ./features/overlays.nix
     ./features/clangd.nix
     ./features/zathura.nix
     ./features/kitty.nix
+    ./features/neovim.nix
     ./features/xdg.nix
     ./features/zsh.nix
     ./features/hyprland.nix
+    ./features/vscode.nix
   ];
 
   nixpkgs = {
@@ -20,50 +24,45 @@
     username = "metagigachad";
     homeDirectory = "/home/metagigachad";
     packages = with pkgs; [
-      # CLI/TUI 
+      # Virtualization
+      docker
+      qemu_kvm
+
+      # Tools
+      procps
       htop
       bluetuith
-      vlc
       tldr
+      unstable.restish
+      zip
+      unzip
+      wget
+      killall
 
       # QT
-      (catppuccin-kvantum.override {
+      (unstable.catppuccin-kvantum.override {
         variant = "Mocha";
         accent = "Lavender";
       })
 
       # GUI
+      vlc
       kitty
       zathura
-      brave
-      telegram-desktop
-      obs-studio
-      discord
-      zoom
+      unstable.brave
+      unstable.telegram-desktop
+      unstable.obs-studio
+      unstable.discord
+      unstable.zoom-us
       qbittorrent
       libreoffice
-
-      # Build deps
-      gcc
-      glibcLocales
-      procps
-      binutils
-      python3
-      python3Packages.pip
-      nodejs
-      cargo
-      zip
-      unzip
-      wget
-
-      # Neovim
-      neovim
-      nixfmt
-      stylua
+      inkscape
+      unstable.chromium
+      xarchiver
+      unstable.steam
     ];
+    sessionVariables = { SHELL = "zsh"; };
   };
-
-  xdg.configFile = { "clangd".source = ../xdg/config/clangd; };
 
   programs.home-manager.enable = true;
   programs.git = {
@@ -76,7 +75,7 @@
     enable = true;
     theme = {
       name = "Catppuccin-Mocha-Compact-Lavender-dark";
-      package = pkgs.catppuccin-gtk.override {
+      package = pkgs.unstable.catppuccin-gtk.override {
         accents = [ "lavender" ];
         size = "compact";
         variant = "mocha";
@@ -84,7 +83,7 @@
     };
     iconTheme = {
       name = "Papirus-Dark";
-      package = pkgs.catppuccin-papirus-folders;
+      package = pkgs.unstable.catppuccin-papirus-folders;
     };
   };
   qt = {
@@ -94,7 +93,7 @@
   };
   home.pointerCursor = {
     name = "Catppuccin-Mocha-Lavender-Cursors";
-    package = pkgs.catppuccin-cursors.mochaLavender;
+    package = pkgs.unstable.catppuccin-cursors.mochaLavender;
     size = 16;
   };
 

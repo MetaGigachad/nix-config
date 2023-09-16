@@ -61,7 +61,7 @@
       general {
         gaps_in = 0
         gaps_out = 0
-        border_size = 2
+        border_size = 1
         col.active_border = $surface0
         col.inactive_border = $mantle
       }
@@ -69,8 +69,12 @@
         rounding = 0
       }
       animations {
-        enabled = false
+        enabled = true
       }
+      animation=workspaces,0,4,default
+      animation=windows,1,4,default
+      animation=fade,1,4,default
+      animation=border,0,4,default
 
       # ETC
       misc {
@@ -115,8 +119,10 @@
       }
 
       # WINDOW RULES
+      windowrule = noborder, steam
+      windowrule = noborder, zoom
       windowrule = tile, Spotify
-      windowrule = float, telegram-desktop
+      windowrule = float, org.kde.polkit-kde-authentication-agent-1
       windowrule = float, REAPER
       windowrule = float, xdg-desktop-portal-gtk
       windowrule = workspace 4, Emacs

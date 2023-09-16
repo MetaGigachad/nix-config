@@ -1,7 +1,7 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, outputs, lib, config, pkgs, ... }: {
   imports = [
+    outputs.homeManagerModules.chad-qt
     ./features/toolchains.nix
-    ./features/overlays.nix
     ./features/clangd.nix
     ./features/zathura.nix
     ./features/kitty.nix
@@ -33,14 +33,14 @@
       htop
       bluetuith
       tldr
-      unstable.restish
+      restish
       zip
       unzip
       wget
       killall
 
       # QT
-      (unstable.catppuccin-kvantum.override {
+      (catppuccin-kvantum.override {
         variant = "Mocha";
         accent = "Lavender";
       })
@@ -49,17 +49,16 @@
       vlc
       kitty
       zathura
-      unstable.brave
-      unstable.telegram-desktop
-      unstable.obs-studio
-      unstable.discord
-      unstable.zoom-us
+      brave
+      telegram-desktop
+      obs-studio
+      discord
+      zoom-us
       qbittorrent
       libreoffice
       inkscape
-      unstable.chromium
+      chromium
       xarchiver
-      unstable.steam
     ];
     sessionVariables = { SHELL = "zsh"; };
   };
@@ -75,7 +74,7 @@
     enable = true;
     theme = {
       name = "Catppuccin-Mocha-Compact-Lavender-dark";
-      package = pkgs.unstable.catppuccin-gtk.override {
+      package = pkgs.catppuccin-gtk.override {
         accents = [ "lavender" ];
         size = "compact";
         variant = "mocha";
@@ -83,17 +82,17 @@
     };
     iconTheme = {
       name = "Papirus-Dark";
-      package = pkgs.unstable.catppuccin-papirus-folders;
+      package = pkgs.catppuccin-papirus-folders;
     };
   };
-  qt = {
+  chad-qt = {
     enable = true;
     platformTheme = "gtk";
     style.name = "kvantum";
   };
   home.pointerCursor = {
     name = "Catppuccin-Mocha-Lavender-Cursors";
-    package = pkgs.unstable.catppuccin-cursors.mochaLavender;
+    package = pkgs.catppuccin-cursors.mochaLavender;
     size = 16;
   };
 

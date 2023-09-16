@@ -2,7 +2,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [ outputs.overlays.unstable-packages ];
 
   nix = {
     # This will add each flake input as a registry
@@ -30,7 +29,7 @@
   boot = {
     loader = {
       systemd-boot.enable = true;
-      timeout = 0;
+      timeout = 5;
     };
     kernelParams = [
       "quiet"
@@ -57,10 +56,13 @@
     };
   };
 
-  hardware.opengl = { 
-    enable = true; 
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [ amdvlk ];
+    driSupport = true;
     driSupport32Bit = true;
   };
+  hardware.steam-hardware.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -70,7 +72,7 @@
     jack.enable = true;
   };
 
-  environment.systemPackages = with pkgs.unstable; [
+  environment.systemPackages = with pkgs; [
     (catppuccin-gtk.override {
       accents = [ "lavender" ];
       size = "standard";
@@ -82,8 +84,9 @@
     libsForQt5.qt5.qtsvg
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.qt5.qtquickcontrols2
+    gparted
   ];
-  fonts.fonts = with pkgs; [ ubuntu_font_family ];
+  fonts.packages = with pkgs; [ ubuntu_font_family ];
 
   # Display Manager
   services.xserver = {

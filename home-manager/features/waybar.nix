@@ -1,10 +1,10 @@
-{ pkgs, ... }: {
+{
   programs.waybar = {
     enable = true;
-    package = pkgs.unstable.waybar;
     settings = {
       topBar = {
-        "layer" = "top"; "modules-left" = [ "wlr/workspaces" ];
+        "layer" = "top";
+        "modules-left" = [ "hyprland/workspaces" ];
         "modules-center" = [ ];
         "modules-right" = [
           "tray"
@@ -46,8 +46,8 @@
           "format-charging" = "󰚥 {capacity}%";
           "format-icons" = [ "" "" "" "" "" ];
         };
-        "wlr/workspaces" = {
-          "format" = "{icon}";
+        "hyprland/workspaces" = {
+          "format" = "{name}";
           "on-scroll-up" = "hyprctl dispatch workspace e+1";
           "on-scroll-down" = "hyprctl dispatch workspace e-1";
           "on-click" = "activate";

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, outputs, ... }: {
   home.packages = with pkgs; [
     neovim
 
@@ -9,7 +9,7 @@
 
     # telescope file browser (gitignore)
     fd
-    
+
     # [Languages]
 
     # cpp
@@ -19,12 +19,13 @@
     lua-language-server
     stylua
 
+
     # nix
     nil
     nixfmt
 
     # python
-    nodePackages.pyright
+    pyright
     python311Packages.autopep8
 
     # cmake

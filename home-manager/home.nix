@@ -1,6 +1,7 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
   imports = [
     outputs.homeManagerModules.chad-qt
+    ./features/direnv.nix
     ./features/toolchains.nix
     ./features/clangd.nix
     ./features/zathura.nix
@@ -28,6 +29,9 @@
       docker
       qemu_kvm
 
+      # Man
+      man-pages
+
       # Tools
       procps
       htop
@@ -38,6 +42,9 @@
       unzip
       wget
       killall
+      sqlite
+      sqlite-web
+      grpcurl
 
       # QT
       (catppuccin-kvantum.override {
@@ -58,7 +65,9 @@
       libreoffice
       inkscape
       chromium
-      xarchiver
+      gnome.file-roller
+      gnome.eog
+      webcord
     ];
     sessionVariables = { SHELL = "zsh"; };
   };
@@ -85,6 +94,7 @@
       package = pkgs.catppuccin-papirus-folders;
     };
   };
+  home.sessionVariables.GTK_THEME = "Catppuccin-Mocha-Compact-Lavender-dark";
   chad-qt = {
     enable = true;
     platformTheme = "gtk";

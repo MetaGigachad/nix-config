@@ -20,7 +20,37 @@
   };
 
   networking.hostName = "honor";
+  networking.firewall.checkReversePath = false;
   networking.networkmanager.enable = true;
+  hardware.usb-modeswitch.enable = true;
+
+  system.activationScripts = {
+    micmute-led.text = ''
+      chgrp video /sys/class/leds/platform::micmute/brightness
+      chmod g+w /sys/class/leds/platform::micmute/brightness
+    '';
+  };
+
+  hardware.steam-hardware.enable = true;
+  programs.steam.enable = true;
+  programs.steam.package = (pkgs.steam.override {
+    extraPkgs = pkgs:
+      with pkgs; [
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXScrnSaver
+        gvfs
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib
+        libkrb5
+        keyutils
+        gamescope
+        mangohud
+      ];
+  });
 
   console = {
     useXkbConfig = true;
@@ -52,7 +82,7 @@
     metagigachad = {
       initialPassword = "1111";
       isNormalUser = true;
-      extraGroups = [ "wheel" "vboxsf" "docker" "kvm" ];
+      extraGroups = [ "wheel" "vboxsf" "docker" "kvm" "video" ];
     };
   };
 
@@ -62,7 +92,6 @@
     driSupport = true;
     driSupport32Bit = true;
   };
-  hardware.steam-hardware.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -85,6 +114,9 @@
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.qt5.qtquickcontrols2
     gparted
+    usb-modeswitch
+    inxi
+    openvpn
   ];
   fonts.packages = with pkgs; [ ubuntu_font_family ];
 

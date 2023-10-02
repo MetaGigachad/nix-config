@@ -11,7 +11,7 @@ let
     gnum4
   ];
   javascript = with pkgs; [ nodejs ];
-  python = pkgs.python310;
-  pythonPkgs = with pkgs.python310Packages; [ virtualenv pip ];
+  python = pkgs.python311;
+  pythonPkgs = ps: with ps; [ pip grpcio-tools jupyter ipykernel matplotlib pandas openpyxl seaborn conan ];
   rust = with pkgs; [ rustc cargo clippy rust-analyzer rustfmt ];
-in { home.packages = [ python ] ++ c ++ javascript ++ pythonPkgs ++ rust; }
+in { home.packages = [ (python.withPackages pythonPkgs) pkgs.libcxxStdenv pkgs.go ] ++ c ++ javascript ++ rust; }

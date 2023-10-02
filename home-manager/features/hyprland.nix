@@ -1,6 +1,25 @@
 { pkgs, config, ... }: {
   imports = [ ./waybar.nix ./rofi.nix ./dunst.nix ./swaylock.nix ];
 
+  xdg.dataFile."bin/switch-mic-mute" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      led_path=/sys/class/leds/platform::micmute/brightness
+      source_id=$(pamixer --list-sources |\
+        grep "alsa_input.pci-0000_03_00.6.analog-stereo" | awk '{print $1}')
+      is_mute=$(pamixer --get-mute --source $source_id)
+      pamixer -t --source $source_id
+      if [ $is_mute = true ]; then
+        pamixer -u --source $source_id
+        echo 0 > $led_path
+      else
+        pamixer -m --source $source_id
+        echo 1 > $led_path
+      fi
+    '';
+  };
+
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
     # Fonts
@@ -92,6 +111,7 @@
         touchpad {
           natural_scroll = 1
           scroll_factor = 0.5
+          disable_while_typing = false
         }
       }
 
@@ -123,8 +143,11 @@
       windowrule = noborder, zoom
       windowrule = tile, Spotify
       windowrule = float, org.kde.polkit-kde-authentication-agent-1
-      windowrule = float, REAPER
-      windowrule = float, xdg-desktop-portal-gtk
+      windowrule = float, eog
+      windowrule = float, file-roller
+      windowrule = float, org.pwmt.zathura
+      windowrule = float, vlc
+      windowrulev2 = float, class:org.telegram.desktop, title:Media viewer
       windowrule = workspace 4, Emacs
       windowrule = workspace 5, Gimp
       windowrule = workspace 5, DesktopEditors
@@ -154,10 +177,17 @@
       bind = $mainMod, up, exec, pamixer -i 5
       bind = $mainMod, down, exec, pamixer -d 5
       bind = $mainMod SHIFT, M, exec, pamixer -t
+      bind = , XF86AudioRaiseVolume, exec, pamixer -i 5
+      bind = , XF86AudioLowerVolume, exec, pamixer -d 5
+      bind = , XF86AudioMute, exec, pamixer -t
+      bind = , XF86AudioMicMute, exec, ${config.xdg.dataFile."bin/switch-mic-mute".source}
+      bind = , mouse:276, exec, ${config.xdg.dataFile."bin/switch-mic-mute".source}
 
       # Brightness control
       bind = $mainMod SHIFT, up, exec, brightnessctl set 5%+
       bind = $mainMod SHIFT, down, exec, brightnessctl set 5%-
+      bind = , XF86MonBrightnessUp, exec, brightnessctl set 5%+
+      bind = , XF86MonBrightnessDown, exec, brightnessctl set 5%-
 
       # Utils
       bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" - | wl-copy

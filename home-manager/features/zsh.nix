@@ -4,6 +4,7 @@
   home.sessionVariables = {
     CLICOLOR = 1;
     EDITOR = "nvim";
+    MANPAGER = "nvim +Man!";
   };
 
   programs.zsh = {
@@ -56,9 +57,6 @@
         };
       }
     ];
-    initExtra = ''
-      export PATH="./venv/bin:$PATH"
-    '';
   };
   programs.starship.enable = true;
   programs.starship.enableZshIntegration = true;

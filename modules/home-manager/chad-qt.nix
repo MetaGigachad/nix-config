@@ -132,7 +132,7 @@ in {
     # Necessary because home.sessionVariables doesn't support mkIf
     envVars = filterAttrs (n: v: v != null) {
       QT_QPA_PLATFORMTHEME = if cfg.platformTheme == "gtk" then
-        "gtk2"
+        "gtk3"
       else if cfg.platformTheme == "qtct" then
         "qt5ct"
       else

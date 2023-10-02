@@ -40,7 +40,7 @@
       set highlight-fg              "#F5C2E7"
       set highlight-active-color	  "#F5C2E7"
 
-      set recolor true
+      set recolor false
       set selection-clipboard clipboard
     '';
   };

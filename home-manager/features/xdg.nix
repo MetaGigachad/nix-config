@@ -31,6 +31,13 @@
   };
   xdg.mimeApps = {
     enable = true;
-    defaultApplications = { "inode/directory" = "thunar.desktop"; };
+    defaultApplications = {
+      "text/plain" = "nvim.desktop";
+      "inode/directory" = "thunar.desktop";
+      "application/pdf" = "org.pwmt.zathura.desktop";
+
+      "image/jpeg" = "org.gnome.eog.desktop";
+      "compressed/archives" = "org.gnome.FileRoller.desktop";
+    };
   };
 }

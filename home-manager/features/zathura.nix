@@ -1,7 +1,5 @@
 {
-  programs.zathura = {
-    enable = true;
-    extraConfig = ''
+  xdg.configFile."zathura/themes/catpuccin-mocha".text = ''
       set default-fg                "#CDD6F4"
       set default-bg 			          "#1E1E2E"
 
@@ -39,9 +37,11 @@
       set highlight-color		        "#575268"
       set highlight-fg              "#F5C2E7"
       set highlight-active-color	  "#F5C2E7"
+      '';
 
+    xdg.configFile."zathura/zathurarc".text = ''
+      include themes/catpuccin-mocha
       set recolor false
       set selection-clipboard clipboard
     '';
-  };
 }

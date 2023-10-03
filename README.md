@@ -2,15 +2,14 @@
 
 ## How to build
 
-Run in repo directory:
+In repo root directory:
 
 ```sh
-# NixOS
-sudo nixos-rebuild switch --flake .#honor
+# NixOS 
+# > run with root privilages
+nixos-rebuild switch --flake '.#honor'
 
-# Home manager (you have to have nix installed)
-home-manager switch --flake .#metagigachad@honor # if you do have home-manager
-nix-shell -p home-manager --run home-manager switch --flake .#metagigachad@honor # if you don't
+# Home manager
+# > first setup nix and standalone home-manager, then run
+home-manager switch --flake '.#metagigachad@nixos' # may need experimental-features flags
 ```
-
-> **WARNING**: It is not guaranteed that home-manager config will work correctly standalone.

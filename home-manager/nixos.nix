@@ -11,6 +11,8 @@
     ./features/zsh.nix
     ./features/hyprland.nix
     ./features/vscode.nix
+    ./features/git.nix
+    ./features/gtk.nix
   ];
 
   nixpkgs = {
@@ -69,45 +71,12 @@
       gnome.eog
       webcord
     ];
-    sessionVariables = { SHELL = "zsh"; };
-  };
-
-  programs.home-manager.enable = true;
-  programs.git = {
-    enable = true;
-    userName = "metagigachad";
-    userEmail = "metagigachad@gmail.com";
-  };
-
-  gtk = {
-    enable = true;
-    theme = {
-      name = "Catppuccin-Mocha-Compact-Lavender-dark";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "lavender" ];
-        size = "compact";
-        variant = "mocha";
-      };
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.catppuccin-papirus-folders;
-    };
-  };
-  home.sessionVariables.GTK_THEME = "Catppuccin-Mocha-Compact-Lavender-dark";
-  chad-qt = {
-    enable = true;
-    platformTheme = "gtk";
-    style.name = "kvantum";
-  };
-  home.pointerCursor = {
-    name = "Catppuccin-Mocha-Lavender-Cursors";
-    package = pkgs.catppuccin-cursors.mochaLavender;
-    size = 16;
   };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
+
+  programs.home-manager.enable = true;
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
 }

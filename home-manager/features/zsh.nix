@@ -2,6 +2,7 @@
   home.packages = with pkgs; [ tree lsd ];
 
   home.sessionVariables = {
+    SHELL = "zsh";
     CLICOLOR = 1;
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
@@ -15,10 +16,6 @@
       path = "${config.xdg.dataHome}/zsh/history";
     };
     shellAliases = {
-      # Nix
-      system-update = "sudo nixos-rebuild switch --flake ~/nix-config/#honor";
-      home-update =
-        "home-manager switch --flake ~/nix-config/#metagigachad@honor";
       # Tree
       ls =
         "lsd -1 --blocks permission,name,date --date relative --group-dirs=first";
